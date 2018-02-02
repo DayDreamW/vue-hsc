@@ -1,12 +1,13 @@
 # vue-hsc1
 
 > A Vue.js project
+```
 基于vue+vue-cli+vue-router+axios+webpack开发的一款仿APPH5
 css用的scss
 请求接口用的axios
 用localStorage做的缓存
 ps:第一个vue项目，因为时间比较紧，所以主要精力放在了理清框架结构，接口请求数据，组件间传参和路由跳转，很多细节没有顾及到，还请多多包涵
-
+```
 #### 项目结构
 ```
 │              
@@ -39,7 +40,7 @@ ps:第一个vue项目，因为时间比较紧，所以主要精力放在了理�
 │  │      tuji.png
 │  │      whitewave.png
 │  │
-│  ├─components
+│  ├─components//组件文件夹
 │  │  │  Banner.vue //Banner轮播组件
 │  │  │  Card.vue	//信用卡页面
 │  │  │  CardList.vue //信用卡组件
