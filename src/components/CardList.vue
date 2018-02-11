@@ -1,8 +1,30 @@
  <!--信用卡列表组件-->
 <template>
 	<div class="wrap">
-		<a v-for="item in items" :href="item.linkUrl">
+		<!--<a v-for="item in items" :href="item.linkUrl">-->
+		<!--<router-link v-for="item in items"  v-if="!accessToken" to="/Login" :key="item.id">
 			<li :href="item.linkUrl">
+			<p class="title-line">
+			
+				<span>{{item.name}}</span>
+				<span><b>{{item.applicants}}人</b>申请成功</span>
+			</p>
+			<P class="summary">{{item.summary}}</P>
+			<p class="point">
+				<span><img src="../assets/cardorang.png">{{item.pointsOne}}</span>
+				<span><img src="../assets/cardorang.png">{{item.pointsTwo}}</span>
+			</p>
+			<div class="item-bottom">
+				<div class="imgclip"><img :src="item.img" /></div>
+				<div class="card-label">
+					<span class="label1">{{item.labelsOne}}</span><br/>
+					<span class="label2">{{item.labelsTwo}}</span>
+				</div>
+			</div>
+			</li>
+		</router-link>-->
+	 	<a v-for="item in items"  ref="hreflink" :href="accessToken?item.linkUrl:''" :key="item.id" @click="jumpTo()">
+			<li>
 			<p class="title-line">
 			
 				<span>{{item.name}}</span>
@@ -27,7 +49,29 @@
 
 <script>
 	export default {
-		props:['items']
+		props:['items'],
+		data(){
+			return{
+				
+			}
+		},
+		computed:{
+			accessToken:function(){
+//				console.log(this.tag1)
+//				console.log(localStorage.getItem('accesstoken'))
+				return localStorage.getItem('accesstoken')
+			}
+		},
+		methods:{
+			jumpTo(){
+				let accessToken = localStorage.getItem('accesstoken')
+				if(!accessToken){
+					this.$router.push('/Login')
+				}else{
+					
+			}
+				}
+		}
 	}
 </script>
 

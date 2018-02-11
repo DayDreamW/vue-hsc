@@ -3,7 +3,7 @@
 	<div class="wrap">
 	<ul>
 		<li v-for="item in nav" @click="selectNav(item.title)">
-			<router-link :to="accessToken === '' ? item.route : item.route1">
+			<router-link :to="accessToken ? item.route : item.route1">
 				<img :src="isSelect === item.title ? item.url_one : item.url" alt="item.title" />
 				<p :class="isSelect === item.title ? 'active' : ''">{{item.title}}</p>
 			</router-link>
@@ -21,7 +21,7 @@
 					{title: '首页', url: require('../assets/index.png'),url_one: require('../assets/indexActive.png'),route:'/',route1:'/'},
 					{title: '借款', url: require('../assets/loan.png'),url_one: require('../assets/loanAcitve.png'),route:'/Loan',route1:'/Loan'},
 					{title: '信用卡', url: require('../assets/card.png'),url_one: require('../assets/cardActive.png'),route:'/Card',route1:'/Card'},
-					{title: '我的', url: require('../assets/index.png'),url_one: require('../assets/indexActive.png'),route:'/Login',route1:'/Mine'}
+					{title: '我的', url: require('../assets/index.png'),url_one: require('../assets/indexActive.png'),route:'/Mine',route1:'/Login'}
 				]
 			}
 		},

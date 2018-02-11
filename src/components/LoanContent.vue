@@ -1,9 +1,9 @@
 <template>
 	<div class="wrap">
 		<ul class="tabBar">
-			<li v-for="item in nav" @click="change(item.title,item.id)">
-				<img :src="item.url"/>
-				<p :class="isSelect === item.title? 'active':''">{{item.title}}</p>
+			<li v-for="item in nav" @click="change(item.name,item.id)">
+				<img :src="item.pic"/>
+				<p :class="isSelect === item.name? 'active':''">{{item.name}}</p>
 			</li>
 		</ul>
 		<ul>
@@ -23,7 +23,7 @@
 		data(){
 			return{
 				items:'',
-				isSelect:'急速贷款',
+				isSelect:'极速贷款',
 				id:'2',
 				nav: [
 					{title:'急速贷款',id:2,url:require('../assets/fast.png'),alt:"急速贷款"},
@@ -38,6 +38,7 @@
 		},
 		created(){
 			this.getData()
+			this.getData1()
 		},
 		methods:{
 				getData(){
@@ -49,7 +50,15 @@
 					params.append('pageNo','1')
 					axios.post(URL,params).then(function(response){
 						that.items = response.data.data.classify
-						console.log(that.items)
+//						console.log(that.items)
+					})
+				},
+				getData1(){
+					let that = this 
+					let URL = '/api/index/getloanClassList'
+					axios.post(URL).then(function(response){
+						that.nav = response.data.data.classify
+//						console.log(that.nav)
 					})
 				},
 				change(title,id){
@@ -63,7 +72,7 @@
 
 <style scoped lang="scss">
 .wrap{
-	margin-top:2.5rem;
+	/*margin-top:2.5rem;*/
 	/*margin-bottom:9rem;*/
 	margin-bottom:2.2rem;
 	ul{

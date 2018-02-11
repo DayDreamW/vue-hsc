@@ -2,9 +2,12 @@
 	<div class="wrap">
 	 <swiper :options="swiperOption">
         <swiper-slide v-for="item in items" :key="item.slideUrl">
-        <a :href="item.slideUrl">
+        <a v-if="accessToken" :href="item.slideUrl">
         	<img :src="item.slidePic" alt="item.slideName"/>
         </a>
+        <router-link v-if="!accessToken" to='/Login'>
+        	<img :src="item.slidePic" alt="item.slideName"/>
+        </router-link>
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
         <!--<div class="swiper-button-prev" slot="button-prev"></div>
@@ -38,7 +41,12 @@
       components: {
 	    swiper,
 	    swiperSlide
-	  }	
+	  },
+	  computed:{
+	  	accessToken:function(){
+	  		return localStorage.getItem('accesstoken')
+	  	}
+	  }
 }
 </script>
 

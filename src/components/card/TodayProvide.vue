@@ -1,7 +1,7 @@
 <template>
 	<div class="wrap">
 		
-		<a class="item" v-for="item in items" :href="item.linkUrl">
+		<a v-if="accessToken" class="item" v-for="item in items" :href="item.linkUrl">
 			<img :src="item.img" />
 			<div class="itemp">
 				<p>{{item.name}}</p>
@@ -9,6 +9,15 @@
 			</div>
 			
 		</a>
+		<router-link v-if="!accessToken"  to="/Login">
+			<a class="item" v-for="item in items">
+			<img :src="item.img" />
+			<div class="itemp">
+				<p>{{item.name}}</p>
+				<p>{{item.summary}}</p>
+			</div>
+			</a>
+		</router-link>
 	</div>
 </template>
 
@@ -32,6 +41,11 @@
 				})
 			}
 	
+		},
+		computed:{
+			accessToken:function(){
+				return localStorage.getItem('accesstoken')
+			}
 		}
 	}
 </script>

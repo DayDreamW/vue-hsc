@@ -20,6 +20,7 @@
 <style lang="scss" scoped>
 	.wrap{
 		margin: 0;
+		margin-top: 2.5rem;
 	}
 	
 </style>

@@ -1,6 +1,6 @@
 <template>
 	<div class="wrap">
-	 <swiper :options="swiperOption">
+	 <swiper :options="swiperOption" class="swiper">
         <swiper-slide v-for="item in items" :key="item.slideUrl">
         <a :href="item.slideUrl">
         	<img :src="item.slide_pic" alt="item.slide-name"/>
@@ -48,9 +48,17 @@
 		width: 100%;
 		margin-bottom: 0rem;
 		overflow: hidden;
-		img{
+		.swiper{
 			width: 100%;
-			height: 10rem;
+				a{
+					width: 100%;
+					img{
+						width: 100%;
+						height: 10rem;
+				}
 		}
+		
+		}
+		
 	}
 </style>

@@ -1,43 +1,41 @@
 <template>
 	<div class="wrap">
+		<!--最外层的波浪形框-->
 		<div class="popDiv">
 			<div class="selectDiv">
-				<select>
-					<option v-for="item in money_nums" value="item">{{item}}元</option>
+				<select ref='select_money' @change="changeMoney()">
+					<option v-for="item in money_nums" :value="item">{{item}}元</option>
 				</select>
 				<select ref="select1"  @change="changevalue()">
-					<option  v-for="item in data.deadline":value="item.index">{{item}}天</option>
+					<option  v-for="item in data.deadline" :value="item">{{item}}{{rate_type?'天':'个月'}}</option>
 				</select>
-				<div></div>
 			</div>
 			<div class="sunNumber">
 				<div class="n-item">
-					<span><b>98.33</b></span><br/>
-					<span>每月应还(元)</span>
+					<span><b>{{repay.toFixed(2)}}</b></span><br/>
+					<span>每{{rate_type?'日':'月'}}应还(元)</span>
 				</div>
 				<div class="n-item">
-					<span><b>180.0</b></span><br/>
-					<span>利息(元)</span>
+					<span><b>{{allRate}}</b></span><br/>
+					<span>总利息(元)</span>
 				</div>
 				<div class="n-item">
 					<span><b>{{rate_num}}%</b></span><br/>
-					<span>月利率</span>
+					<span>{{rate_type?'日':'月'}}利率</span>
 				</div>
 			</div>
 		</div>
-		<!--<div class="head">
-			<p>{{data.name}}</p>
-			<img src="../assets/arrow-backblack.png" @click="goback"/>
-		</div>-->
+		<!--页面标题及页面上部分内容-->
 		<TitleBack :item="data.name"/>
 		<div class="top">
 			<img :src="data.image_url"/>
 			<div class="top-right">
 				<span>已放款：{{data.loan_number}}人</span><br/>
-				<span>借款期限：{{data.deadline_sml}}-{{data.deadline_big}}天</span><br/>
+				<span>借款期限：{{data.deadline_sml}}-{{data.deadline_big}}{{rate_type?'天':'个月'}}</span><br/>
 				<span>借款范围：{{data.money_sml}}-{{data.money_big}}元</span>
 			</div>
 		</div>
+		<!--静态内容显示-->
 		<div class="center">
 			<detailTitleLine title="申请流程"/>
 			<div v-for="item in data.material">
@@ -59,7 +57,12 @@
 				<div v-html="data.repayment_instructions"></div>
 			</div>
 		</div>
-		<button>立即申请</button>
+		<router-link to="/Login" v-if="!accessToken">
+			<button type="button">立即申请</button>
+		</router-link>
+		<a v-if="accessToken" :href="data.jump_url">
+			<button type="button">立即申请</button>
+		</a>
 	</div>
 </template>
 
@@ -75,21 +78,44 @@
 				money_num:[],
 				time_num:[],
 				rate:[],
-				index:0
+				index:0,
+				calMoney:0,
+				calTime:0
+				
 			}
 		},
 		computed: {
 			money_nums:function(){
 				let numList = []
-				for(let i=this.data.money_big;i>this.data.money_sml;i-=500){
+				for(let i=this.data.money_big;i>=this.data.money_sml;i-=this.data.rising_range){
+//					console.log(i);
 					numList.push(i);
 				}
 				return numList;
 			},
 			rate_num:function(){
-				console.log(this.index)
+//				console.log(this.index)
 				return this.rate[this.index]
+			},
+			rate_type:function(){
+				if(this.data.rate_type == '1'){
+					return true
+				} else{
+					return false
+				}
+			},
+			allRate:function(){
+//				console.log('this.time_num'+this.time_num)
+				return (Number(this.rate_num)*Number(this.calMoney)*Number(this.calTime)*0.01).toFixed(2)
+			},
+			repay:function(){
+//				console.log('allRate: '+this.allRate+Number(this.calMoney))
+				return (Number(this.allRate)+Number(this.calMoney))/Number(this.calTime)
+			},
+			accessToken:function(){
+				return localStorage.getItem('accesstoken')
 			}
+			
 		},
 		components:{
 			HeadBar,detailTitleLine,TitleBack
@@ -105,6 +131,8 @@
 				axios.get(url).then(function(response){
 					that.data = response.data.data
 					that.rate = response.data.data.rate
+					that.calMoney = response.data.data.money_big
+					that.calTime = response.data.data.deadline_big
 				})
 				.catch(function(error){
 					console.log(err)
@@ -113,9 +141,17 @@
 			goback(){
 				this.$router.go(-1)
 			},
-			changevalue(event){
+			changevalue( ){
+				
 				this.index = this.$refs.select1.selectedIndex
-//				console.log(this.index)
+				this.calTime = this.$refs.select1.value
+				
+			},
+			changeMoney(){
+				console.log(this.$refs.select_money.value)
+				this.calMoney = this.$refs.select_money.value
+			},
+			apply(){
 				
 			}
 		}
@@ -141,20 +177,20 @@
 			top: 7.5rem;
 			z-index: 999;
 			background:url(../assets/whitewave.png) 0 0 no-repeat;
-			background-size:contain;
-			width: 90%;
-			height: 100%;
-			margin-bottom: 2rem;
-			margin-left: 5%;
+			background-size:100%;
+			padding-bottom: 1rem;
+			padding-right: 1rem;
+			width: 87%;
+			height: 11rem;
+			margin-left: 4.5%;
 			.sunNumber{
-				border-top:solid #CCCCCC 1px;
 				margin:0 0.4rem;
-				padding-top: 1.5rem;
+				
 				position:relative;
 				overflow: hidden;
 				clear: both;
 				margin-top:2rem;
-				
+				width:100%;
 				.n-item{
 					float: left;
 					width: 33%;
@@ -165,17 +201,23 @@
 							font-size: 1.22rem;
 							color: #FF5454;
 							line-height: 1.8rem;
+							font-weight: normal;
 						}
 					}
 				}
+				.n-item+.n-item{
+					border-left: solid #F4F2F0 1px;
+				}
 			}
 			.selectDiv{
-				width:80%;
-				margin-left:10%;
+				width:85%;
+				margin-left:7.5%;
+				border-bottom: 1px solid #F4F2F0;
+				padding-bottom: 1rem;
 				margin-top:2rem;
 				overflow: hidden;
 				select{
-					width:6.8rem;
+					width:7.8rem;
 					border: none;
 					background-color: #FF5454;
 					color: white;

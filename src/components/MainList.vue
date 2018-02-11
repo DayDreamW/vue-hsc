@@ -35,7 +35,7 @@
 				axios.post("/api/index/getLabelList").then(function(response){
 					that.item = response.data.data.loan
 					that.card = response.data.data.card
-					console.log(response.data.data.card.name)
+//					console.log(response.data.data.card.name)
 				})
 				.catch(function(err){
 					console.log(err)

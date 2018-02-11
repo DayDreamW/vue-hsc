@@ -4,9 +4,11 @@
 			<img src="../../assets/tuji.png" />
 			<span>{{phone}}</span>
 		</div>
-		<router-link :to='item.route' v-for="item in nav" class="line" tag="div">
+		<router-link :to='item.route' v-for="item in nav" class="line" tag="div" :key="item.id">
 			<lineItem  :imgsrc='item.imgsrc'  :textline='item.textline' :key="item.id"/>
 		</router-link>
+		<button type="button" @click="logout()">退出登录</button>
+		
 	</div>
 </template>
 
@@ -32,6 +34,14 @@
 					 {imgsrc:require("../../assets/cardorang.png"),textline:'关于我们',id:"2",route:'/Mine/investPeople'}, 
 				]
 			}
+		},
+		methods:{
+			logout(){
+				localStorage.removeItem('accesstoken')
+				this.$router.replace({
+						path: '/Login'
+					})
+			}
 		}
 		
 	}
@@ -42,7 +52,7 @@
 		padding:0rem;
 		margin-top:2.5rem;
 		background-color: white;
-		 .title{
+		.title{
 		 	width:100%;
 			background-image:url(../../assets/background-color.png);
 			img{
@@ -57,10 +67,23 @@
 			
 			}
 			
-			}
-			.line{
+		}
+		.line{
 				width: 100%;
-			}
+		}
+		
+		button{
+			width:100%;
+			position: absolute;
+			bottom: 4rem;
+			/*height: 2rem;*/
+			border: none;
+			outline: none;
+			background-color: #FF0000;
+			color: white;
+			font-size: 1.2rem;
+			padding: 0.5rem 0rem;
+		}
 		
 	}
 </style>

@@ -4,9 +4,9 @@
 		<li v-for="item in items">
 			<router-link :to="{path: '/loan/productdetail',query:{id:item.id}}" tag="div" :key="item.id">
 			<img :src="item.image_url"/>
-			<div class="right">
+			<div class="right" :rate_type="item.rate_type">
 				<span>{{item.rate}}</span><br/>
-				<span class="dayRate">日利率</span>
+				<span class="dayRate">{{item.rate_type=='1' ? '日' : '月'}}利率</span>
 				
 			</div>
 			<div class="center">
@@ -22,7 +22,24 @@
 
 <script>
 	export default {
-		props:['items']
+		props:['items'],
+		data(){
+			return{
+				rate_type:'日'
+			}
+		},
+		computed:{
+			
+			rate: function(){
+				let that = this
+				console.log('rate'+this.rate_type)
+				if(that.rate_type ==='1'){
+					return '天'
+				}else {
+					return '月'
+				}
+			}
+		}
 	}
 </script>
 

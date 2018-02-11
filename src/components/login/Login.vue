@@ -63,12 +63,15 @@
 				let that = this
 				let url="/api/mobileCode/checkSmsCode?mobileCode="+this.vValue+"&mobile="+this.phone
 				axios.post(url).then(function(response){
-					localStorage.setItem('accesstoken',that.phone)
-					console.log(localStorage.getItem(accesstoken))
-					alert("登录成功！")
-					that.$router.push({
-						path: '/loginMine'
-					})
+					if(response.data.success === 'true'){
+						localStorage.setItem('accesstoken',that.phone)
+						alert("登录成功！")
+						that.$router.push({
+							path: '/Mine'
+						})
+					}else{
+						console.log("登录失败")
+					}
 					
 				})
 			},

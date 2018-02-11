@@ -60,7 +60,7 @@
 				let that = this
 				axios.post("/api/creditcards/initData").then(function(response){
 					that.data = response.data.data
-					console.log(response.data.data.bankList)
+//					console.log(response.data.data.bankList)
 				})
 			
 			}
@@ -71,7 +71,7 @@
 <style lang="scss" scoped>
 .wrap{
 	margin: 0;
-	margin-bottom:5rem;
+	margin-bottom:4.5rem;
 	.title{
 		background-color: white;
 		margin-bottom: 2rem;
